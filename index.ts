@@ -5,17 +5,10 @@ import { functionToSandbox } from "./lib";
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
 
-// Basic middleware
-app.use(express.json());
-
-// Health check route
-app.get("/health", (_req, res) => {
+app.use(express.json()).get("/health", (_req, res) => {
     res.status(200).send("ok");
-});
-
-// Root route
-app.get("/", (_req, res) => {
-    res.send("Hello from Express + Bun");
+}).get("/", (_req, res) => {
+    res.send("Deploy Anything server live.");
 });
 
 app.listen(PORT, () => {
