@@ -15,6 +15,7 @@ import { listFilesTool } from "./tools/listFiles.tool";
 import { readFileByIdTool } from "./tools/readFileById";
 import { diagAgentPrompt } from "./prompts/diagAgent.prompt";
 import { AgentContext, type AgentState } from "@fragola-ai/agentic/agent";
+import { success } from "zod/v4";
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
@@ -39,6 +40,7 @@ app.use(express.json()).get("/health", (_req, res) => {
 export const repoDiagnosticStateSchema = z.object({
     success: z.boolean().describe("Indicates whether the diagnostic was successful."),
     missingConfig: z.boolean().describe("Indicates if the repository is missing configuration."),
+    // securityIssue: z.string().describe("security issue found"),
     missingScripts: z.union([
         z.object({
             missing: z.literal(false).describe("No scripts are missing.")
@@ -52,6 +54,7 @@ export const repoDiagnosticStateSchema = z.object({
 });
 
 type RepoDiagnosticState = {
+    complete?: boolean,
     success: boolean,
     agentState: AgentState | undefined
 } & z.infer<typeof repoDiagnosticStateSchema>;
@@ -68,14 +71,21 @@ app.get("/api/repoDiagnostic", validateQueryParams(repoDiagnosticSchema), async 
         agentState: undefined
     }
     const updateState = (data: RepoDiagnosticState, close: boolean = false) => {
-        if (res.writableEnded) return;
+        if (data.complete) {
+            !res.writableEnded && res.end();
+            return ;
+        } 
         state = data;
+        if (close)
+            state["complete"] = true;
         res.write(`data: ${JSON.stringify(state)}\n\n`);
         if (typeof (res as any).flush === "function") {
             (res as any).flush();
         }
-        if (close === true && !res.writableEnded)
-            res.end();
+        if (close === true) {
+            !res.writableEnded && res.end();
+            res.json({ success: true })
+        }
     };
 
     res.set({
@@ -140,7 +150,7 @@ app.get("/api/repoDiagnostic", validateQueryParams(repoDiagnosticSchema), async 
                 tools,
                 modelSettings: {
                     model: "blackboxai/anthropic/claude-opus-4",
-                    tool_choice: "required",
+                    tool_choice: "auto",
                     stream: true
                 },
                 stepOptions: {
@@ -165,9 +175,13 @@ app.get("/api/repoDiagnostic", validateQueryParams(repoDiagnosticSchema), async 
                             }
                         })();
                     } case "final_answer": {
-                        updateState({ ...state, ...params, agentState: ctx.state }, true);
                         await ctx.stop();
-                        return "sucess";
+                        updateState({ ...state, ...params, agentState: ctx.state }, true);
+                        diagAgent.raw((_, ctx) => {
+                            return { ...ctx.state, conversationstepCount: 0, conversation: [], status: "idle" }
+                        });
+                        break ;
+                        // return "success";
                     }
                     default: {
                         return skip();
@@ -175,21 +189,28 @@ app.get("/api/repoDiagnostic", validateQueryParams(repoDiagnosticSchema), async 
                 }
             });
 
+            diagAgent.onModelInvocation(async (callApi, ctx) => {
+                if (ctx.state.stepCount > 100)
+                    return await callApi(undefined, { ...ctx.options.modelSettings, tool_choice: "final_answer" as any });
+                else
+                    return skip();
+            });
+
             diagAgent.onAfterStateUpdate(async (ctx) => {
                 updateState({ ...state, agentState: ctx.state }, false);
                 console.log("agent state: ", JSON.stringify(ctx.state, null, 2));
             });
-            void await diagAgent.userMessage({ content: "check this project for deployability" });
+            if (!diagAgent.getState().conversation.length)
+                void await diagAgent.userMessage({ content: "check this project for deployability" });
+            else {
+                updateState(state, true);
+            }
         } else
             updateState({ ...state, success: false }, true);
     } catch (e) {
         console.error("err", e);
         updateState({ ...state, success: false }, true);
     }
-    // if (!response.success) {
-    // } else {
-    // }
-
 });
 
 app.listen(PORT, async () => {

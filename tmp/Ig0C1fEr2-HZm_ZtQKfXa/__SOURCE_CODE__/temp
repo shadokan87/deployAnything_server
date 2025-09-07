@@ -1,0 +1,79 @@
+// Import the Vercel SDK
+//import load env
+import { Vercel } from "@vercel/sdk";
+import { error } from "console";
+
+// charger load env
+const vercel = new Vercel({
+    bearerToken: process.env.VERCEL_TOKEN
+});
+
+// fonction qui parse une url pour recuperer le account-name et le repo name
+// ...
+
+// fonction qui verifie si une url est bien une url github est valide ou false (retourne true ou false)
+// ...
+
+// fonction qui verifie si le repo contient une branche main ou master sinon renvoie un message d'erreur
+// ...
+
+async function createAndCheckDeployment(repo_name:string, account_name:string, branch:string) {
+    try {
+        // Create a new deployment from GitHub repo
+        const createResponse = await vercel.deployments.createDeployment({
+            requestBody: {
+                name: "my-web-app",
+                target: "production",
+                gitSource: {
+                    type: "github",
+                    repo: repo_name,
+                    ref: branch,
+                    org: account_name,
+                }
+            },
+        });
+
+        const deploymentId = createResponse.id;
+        console.log(
+            `Deployment created: ID ${deploymentId} and status ${createResponse.status}`
+        );
+
+        // Optionally, poll for deployment status
+        let deploymentStatus = createResponse.status;
+        let deploymentURL = createResponse.url;
+        while (
+            deploymentStatus !== "CANCELED" ||
+            deploymentStatus !== "ERROR" ||
+            deploymentStatus !== "READY"
+        ) {
+            await new Promise((resolve) => setTimeout(resolve, 5000));
+            const statusResponse = await vercel.deployments.getDeployment({
+                idOrUrl: deploymentId,
+                withGitRepoInfo: "true",
+            });
+            deploymentStatus = statusResponse.status;
+            deploymentURL = statusResponse.url;
+            console.log(`Deployment status: ${deploymentStatus}`);
+        }
+
+        if (deploymentStatus === "READY") {
+            console.log(`Deployment successful. URL: ${deploymentURL}`);
+        } else {
+            // Fetch the latest deployment status for more details
+            const details = await vercel.deployments.getDeployment({
+                idOrUrl: deploymentId,
+                withGitRepoInfo: "true",
+            });
+            console.log("Deployment failed or was canceled");
+            console.log("Full deployment details:", details);
+        }
+    } catch (error) {
+        console.error(
+            error instanceof Error ? `Error: ${error.message}` : String(error)
+        );
+    }
+}
+
+createAndCheckDeployment("Deploy-Anything", "main", "shadokan87");
+
+
