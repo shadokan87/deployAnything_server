@@ -71,7 +71,7 @@ app.get("/api/repoDiagnostic", validateQueryParams(repoDiagnosticSchema), async 
         agentState: undefined
     }
     const updateState = (data: RepoDiagnosticState, close: boolean = false) => {
-        if (data.complete) {
+        if (data.complete || state.complete) {
             !res.writableEnded && res.end();
             return ;
         } 
@@ -131,7 +131,8 @@ app.get("/api/repoDiagnostic", validateQueryParams(repoDiagnosticSchema), async 
         return { success: true, data: path }
     };
     try {
-        const response = await cloneRepo("https://github.com/shadokan87/Deploy-Anything", requestId);
+        const { url } = req.query as { url: string };
+        const response = await cloneRepo(url, requestId);
         const withSourceCode = (path: string) => `${path}/__SOURCE_CODE__`;
         if (response.success) {
             console.log("#br1");
