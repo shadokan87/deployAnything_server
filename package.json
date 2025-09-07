@@ -8,13 +8,22 @@
   },
   "devDependencies": {
     "@types/bun": "latest",
+    "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
   "dependencies": {
+    "@fragola-ai/agentic": "^0.1.0",
+    "cors": "^2.8.5",
+    "directory-tree": "^3.5.2",
     "express": "^5.1.0",
-    "vm2": "^3.9.19"
+    "nanoid": "^5.1.5",
+    "octokit": "^5.0.3",
+    "status-code-enum": "^1.0.0",
+    "tar": "^7.4.3",
+    "vm2": "^3.9.19",
+    "zod": "^3.25.67"
   }
 }

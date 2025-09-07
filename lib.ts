@@ -1,5 +1,5 @@
 const { NodeVM } = require("vm2");
-const vm = new NodeVM({ require: { external: true, root: "./" } });
+const vm = new NodeVM({ allowAsync: true, require: { external: true, root: "./" } });
 
 /**
  * Takes a function and prepares it for sandboxed execution.
