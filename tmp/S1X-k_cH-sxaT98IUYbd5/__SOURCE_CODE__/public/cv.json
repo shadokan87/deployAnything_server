@@ -1,0 +1,131 @@
+{
+  "personalInfo": {
+    "name": "Eclipse TOURE",
+    "title": "Software engineer, Generative AI",
+    "location": "Paris, France",
+    "willingness": {
+      "relocate": true,
+      "workRemotely": true,
+      "startups": true
+    },
+    "contact": {
+      "linkedin": "linkedin.com/in/eclipse-toure",
+      "github": "github.com/shadokan87",
+      "phone": "+33 6 25 29 31 38",
+      "email": "eclipse.toure@outlook.fr"
+    }
+  },
+  "professionalExperience": [
+    {
+      "position": "Technical co-founder",
+      "company": "FragolaAI",
+      "period": "July 2024 - March 2025",
+      "duration": "8 months",
+      "location": "Paris, France",
+      "description": "Startup that initially started working on an AI programming assistant, pivoted to an open-source typescript library to build AI agents faster.",
+      "projectLink": "https://github.com/shadokan87/FragolaAI",
+      "tasksPerformed": [
+        "Setting up a VSCode web/view extension to work with svelte5, for better performances",
+        "Creation of a component library in svelte5 using melt ui headless",
+        "Creation of different AI agents using OpenAI SDK, prompt engineering and by implementing the required tools",
+        "Backend implemented using nodeJS"
+      ]
+    },
+    {
+      "position": "Freelance job, backend generative AI",
+      "company": "Orakle",
+      "period": "August 2024",
+      "location": "Paris, France",
+      "description": "Freelance job where I was responsible of the backend and AI features of a mobile app called Orakle, the AI features involved creating agents and performing RAG with Supabase and pg_vector plugin for postgresql",
+      "tasksPerformed": [
+        "Implemented the backend with postgresql and serverless functions via Supabase",
+        "Creation of a Serverless API using postgresql functions and pg_vector plugin",
+        "Creation of different AI agents using OpenAI SDK, prompt engineering and by implementing the required tools",
+        "Writing documentation"
+      ]
+    },
+    {
+      "position": "Hackaton - Buildspace nights and weekends",
+      "company": "",
+      "period": "May 2024",
+      "location": "Paris, France",
+      "description": "Remote hackaton of 4 weeks based in San Francisco where I built the prototype of an AI coding assistant. Didn't help you review changes before any code is generated.",
+      "tasksPerformed": [
+        "Backend with nodeJS and Supabase",
+        "Implementation of the user interface with Ant Design library for React",
+        "Creation of different AI agents using OpenAI SDK, prompt engineering and by implementing the required tools"
+      ]
+    },
+    {
+      "position": "Software engineer Typescript",
+      "company": "Sorcel",
+      "period": "November 2023 - July 2024",
+      "duration": "8 months",
+      "location": "Paris, France", 
+      "description": "Startup offering a no-code web application to engage customers with NFTs. Earned 250k+ € to the company by completing and claiming developer bounty.",
+      "tasksPerformed": [
+        "Responsible for production deployment",
+        "Migration of the backend (Azure Backend as a Service) to NestJS",
+        "Migration of serverless functions from Vercel to Google Cloud Functions",
+        "Rewriting documentation and integrating APIs into third-party services",
+        "Implementation of CI/CD scripts",
+        "Deployment on Vercel, Railway and Digital Ocean",
+        "Writing tests and documentation",
+        "Maintenance of the design system and various components on ReactJS (Chakra UI library)",
+        "Implementation of the user interface"
+      ]
+    },
+    {
+      "position": "Intern Software engineer Typescript",
+      "company": "Groupe Projex",
+      "period": "February - July 2023",
+      "duration": "6 months",
+      "location": "Paris, France",
+      "description": "Development in a team of 5 for an all-in-one management web app for civil engineering professionals.",
+      "tasksPerformed": [
+        "Maintenance of various microservices on ExpressJs",
+        "Maintenance of the design system and various components on React (Ant Design library)",
+        "Implementation of the user interface",
+        "Configuration of Directus 9 (headless CMS similar to STRAPI) using PostgreSQL",
+        "Writing documentation"
+      ]
+    }
+  ],
+  "creative": {
+    "figma": true,
+    "adobe photoshop": true,
+    "adobe after effects": true,
+    "designPortfolioWebsite": "https://eclipse-design.notion.site/My-design-portfolio-1ea1831b311380d1a4a5daaefc8310ff"
+  },
+  "programmingLanguages": [
+    "TypeScript",
+    "JavaScript",
+    "Bash",
+    "Python",
+    "C"
+  ],
+  "frameworksAndSkills": [
+    "Prompt engineering",
+    "RAG",
+    "AI agents",
+    "NestJs",
+    "ExpressJs",
+    "NodeJs",
+    "React/NextJs",
+    "Svelte/Sveltkit",
+    "Docker",
+    "Supabase",
+    "Pg_vector",
+    "VSCode extension api"
+  ],
+  "languages": {
+    "nativeFrench": true,
+    "fluentEnglish": true
+  },
+  "education": {
+    "degree": "Engineering school: 42",
+    "websiteLink": "https://42.fr/en/homepage/",
+    "location": "Paris",
+    "period": "2019 - 2023"
+  }
+}

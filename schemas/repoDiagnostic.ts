@@ -1,7 +1,8 @@
 import z from "zod";
 
 export const repoDiagnosticSchema = z.object({
-    org: z.string(),
-    name: z.string(),
+    // org: z.string(),
+    // name: z.string(),
+    url: z.string(),
     access_token: z.string()
 });

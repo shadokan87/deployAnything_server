@@ -39,6 +39,7 @@ app.use(express.json()).get("/health", (_req, res) => {
  */
 export const repoDiagnosticStateSchema = z.object({
     success: z.boolean().describe("Indicates whether the diagnostic was successful."),
+    projectSummary: z.string().describe("A summary of what the project about"),
     missingConfig: z.boolean().describe("Indicates if the repository is missing configuration."),
     // securityIssue: z.string().describe("security issue found"),
     missingScripts: z.union([
@@ -131,7 +132,7 @@ app.get("/api/repoDiagnostic", validateQueryParams(repoDiagnosticSchema), async 
         return { success: true, data: path }
     };
     try {
-        const { url } = req.query as { url: string };
+        const { url } = req.query as {url: string};
         const response = await cloneRepo(url, requestId);
         const withSourceCode = (path: string) => `${path}/__SOURCE_CODE__`;
         if (response.success) {
